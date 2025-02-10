@@ -14,4 +14,6 @@ public class UserRoleEntity
     [Required]
     [Column(TypeName = "nvarchar(50)")]
     public string RoleName { get; set; } = null!;
+
+    public ICollection<UserEntity> Users { get; set; } = [];
 }

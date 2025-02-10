@@ -1,6 +1,10 @@
-﻿namespace Data.Interfaces
+﻿using Data.Entities;
+using System.Linq.Expressions;
+
+namespace Data.Interfaces
 {
-    internal interface IServiceRepository
+    public interface IServiceRepository : IBaseRepository<ServiceEntity>
     {
+        Task<ServiceEntity?> GetServiceWithUnitAsync(Expression<Func<ServiceEntity, bool>> expression);
     }
 }

@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Data.Contexts;
+using Data.Entities;
+using Data.Interfaces;
+using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
 
-namespace Data.Repositories
+namespace Data.Repositories;
+
+public class StatusTypeRepository(DataContext context) : BaseRepository<StatusTypeEntity>(context), IStatusTypeRepository
 {
-    internal class StatusTypeRepository
-    {
-    }
 }

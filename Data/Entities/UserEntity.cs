@@ -24,4 +24,6 @@ public class UserEntity
     [ForeignKey("UserRole")]
     public int RoleId { get; set; }
     public UserRoleEntity Role { get; set; } = null!;
+
+    public ICollection<ProjectEntity> Projects { get; set; } = [];
 }

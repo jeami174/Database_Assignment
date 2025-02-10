@@ -2,40 +2,26 @@
 using Data.Entities;
 using Data.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
 using System.Linq.Expressions;
 
-namespace Data.Repositories;
-
-public class ServiceRepository(DataContext context) : BaseRepository<ServiceEntity>(context), IServiceRepository
+namespace Data.Repositories
 {
-    public async Task<IEnumerable<ServiceEntity>> GetServicesWithUnitsAsync()
+    public class ServiceRepository(DataContext context) : BaseRepository<ServiceEntity>(context), IServiceRepository
     {
-        return await _dbSet
-            .Include(s => s.Unit)
-            .ToListAsync();
-    }
-
-    public async Task<ServiceEntity?> GetServiceWithUnitAsync(Expression<Func<ServiceEntity, bool>> expression)
-    {
-        return await _dbSet
-            .Include(s => s.Unit)
-            .FirstOrDefaultAsync(expression);
-    }
-
-    public async Task<bool> AddServiceToProjectAsync(int projectId, ServiceEntity service)
-    {
-        try
+        public async Task<ServiceEntity?> GetServiceWithUnitAsync(Expression<Func<ServiceEntity, bool>> expression)
         {
-            service.ProjectId = projectId;
-            _dbSet.Add(service);
-
-            await _context.SaveChangesAsync();
-            return true;
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error adding service to project: {ex.Message}");
-            return false;
+            try
+            {
+                return await _context.Services
+                    .Include(s => s.Unit)
+                    .FirstOrDefaultAsync(expression);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Fel vid hämtning av service med unit: {ex.Message}");
+                return null;
+            }
         }
     }
 }
