@@ -1,12 +1,13 @@
 ﻿
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Business.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace Data.Entities;
 
 [Index(nameof(ServiceName), IsUnique = true)]
-public class ServiceEntity
+public class ServiceEntity : IEntity
 {
     [Key]
     public int Id { get; set; }

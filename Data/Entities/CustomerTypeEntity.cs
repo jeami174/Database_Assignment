@@ -1,10 +1,11 @@
 ﻿
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Business.Interfaces;
 
 namespace Data.Entities;
 
-public class CustomerTypeEntity
+public class CustomerTypeEntity : IEntity
 {
     [Key]
     public int Id { get; set; }

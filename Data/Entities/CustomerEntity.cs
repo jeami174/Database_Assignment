@@ -1,9 +1,12 @@
 ﻿
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Security.Principal;
+using Business.Interfaces;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 namespace Data.Entities;
 
-public class CustomerEntity
+public class CustomerEntity : IEntity
 {
     [Key]
     public int Id { get; set; }

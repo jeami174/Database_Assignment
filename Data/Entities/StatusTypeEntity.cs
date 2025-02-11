@@ -1,11 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Business.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace Data.Entities;
 
 [Index(nameof(StatusTypeName), IsUnique = true)]
-public class StatusTypeEntity
+public class StatusTypeEntity : IEntity
 {
     [Key]
     public int Id { get; set; }
