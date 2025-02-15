@@ -5,7 +5,7 @@ using Business.Interfaces;
 
 namespace Data.Entities;
 
-public class CustomerTypeEntity : IEntity
+public class CustomerTypeEntity
 {
     [Key]
     public int Id { get; set; }

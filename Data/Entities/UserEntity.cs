@@ -1,11 +1,12 @@
 ﻿
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Business.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace Data.Entities;
 
-public class UserEntity : IEntity
+[Index(nameof(Email), IsUnique = true)]
+public class UserEntity
 {
     [Key]
     public int Id {  get; set; }
@@ -21,6 +22,9 @@ public class UserEntity : IEntity
     [Required]
     [Column(TypeName = "varchar(20)")]
     public string Email { get; set; } = null!;
+
+
+
 
     [ForeignKey("UserRole")]
     public int RoleId { get; set; }

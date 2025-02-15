@@ -6,8 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Data.Entities;
 
-[Index(nameof(Title), IsUnique = true)]
-public class ProjectEntity : IEntity
+public class ProjectEntity
 {
     [Key]
     public int Id { get; set; }
@@ -27,7 +26,8 @@ public class ProjectEntity : IEntity
     public DateTime EndDate { get; set; }
 
     [Required]
-    public decimal TotalPrice { get; set; } ///Behövs denna?? 
+    public decimal TotalPrice { get; set; }
+
 
 
 

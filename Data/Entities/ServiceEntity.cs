@@ -1,13 +1,12 @@
 ﻿
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Business.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace Data.Entities;
 
 [Index(nameof(ServiceName), IsUnique = true)]
-public class ServiceEntity : IEntity
+public class ServiceEntity
 {
     [Key]
     public int Id { get; set; }
@@ -17,7 +16,8 @@ public class ServiceEntity : IEntity
     public string ServiceName { get; set; } = null!;
 
     [Required]
-    public decimal PricePerHour{ get; set; }
+    public decimal PricePerUnit{ get; set; }
+
 
     [ForeignKey("Unit")]
     public int UnitId { get; set; }

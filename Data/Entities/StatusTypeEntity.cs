@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Data.Entities;
 
 [Index(nameof(StatusTypeName), IsUnique = true)]
-public class StatusTypeEntity : IEntity
+public class StatusTypeEntity
 {
     [Key]
     public int Id { get; set; }

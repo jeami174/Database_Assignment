@@ -3,10 +3,12 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Security.Principal;
 using Business.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 namespace Data.Entities;
 
-public class CustomerEntity : IEntity
+[Index(nameof(CustomerName), IsUnique = true)]
+public class CustomerEntity
 {
     [Key]
     public int Id { get; set; }
@@ -14,6 +16,9 @@ public class CustomerEntity : IEntity
     [Required]
     [Column(TypeName = "nvarchar(100)")]
     public string CustomerName { get; set; } = null!;
+
+
+
 
     [ForeignKey("CustomerType")]
     public int CustomerTypeId { get; set; }

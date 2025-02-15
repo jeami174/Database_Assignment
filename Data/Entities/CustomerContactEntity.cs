@@ -2,8 +2,10 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Security.Principal;
+using Microsoft.EntityFrameworkCore;
 namespace Data.Entities;
 
+[Index(nameof(Email), IsUnique = true)]
 public class CustomerContactEntity
 {
     [Key]
@@ -20,6 +22,9 @@ public class CustomerContactEntity
     [Required]
     [Column(TypeName = "varchar(20)")]
     public string Email { get; set; } = null!;
+
+
+
 
     [ForeignKey("Customer")]
     public int CustomerId { get; set; }

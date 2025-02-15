@@ -1,12 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Business.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace Data.Entities;
 
 [Index(nameof(UnitName), IsUnique = true)]
-public class UnitEntity : IEntity
+public class UnitEntity
 {   
     [Key]
     public int Id { get; set; }
