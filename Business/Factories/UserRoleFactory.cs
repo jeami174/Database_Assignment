@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Net.NetworkInformation;
 using Business.Dtos;
 using Business.Models;
 using Data.Entities;
@@ -7,7 +7,23 @@ namespace Business.Factories;
 
 public static class UserRoleFactory
 {
-    public static UserRoleModel ModelFromEntity(UserRoleEntity entity)
+    public static UserRoleCreateDto Create()
+    {
+        return new UserRoleCreateDto();
+    }
+
+    public static UserRoleEntity CreateUserRoleEntity(UserRoleCreateDto dto)
+    {
+        if (dto == null)
+            throw new ArgumentNullException(nameof(dto));
+
+        return new UserRoleEntity
+        {
+            RoleName = dto.RoleName
+        };
+    }
+
+    public static UserRoleModel CreateUserRoleModel(UserRoleEntity entity)
     {
         if (entity == null)
             throw new ArgumentNullException(nameof(entity));
@@ -19,21 +35,14 @@ public static class UserRoleFactory
         };
     }
 
-    public static UserRoleEntity EntityFromModel(UserRoleModel model)
+    public static UserRoleEntity UpdateUserRoleEntity(UserRoleEntity entity, UserRoleUpdateDto dto)
     {
-        return new UserRoleEntity
-        {
-            Id = model.Id,
-            RoleName = model.RoleName
-        };
-    }
+        if (entity == null)
+            throw new ArgumentNullException(nameof(entity));
+        if (dto == null)
+            throw new ArgumentNullException(nameof(dto));
 
-    public static UserRoleEntity EntityFromDto(UserRoleDto dto)
-    {
-        return new UserRoleEntity
-        {
-            RoleName = dto.RoleName
-        };
+        entity.RoleName = dto.RoleName;
+        return entity;
     }
 }
-

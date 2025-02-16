@@ -1,42 +1,42 @@
-﻿using System;
+﻿using Business.Dtos;
 using Business.Models;
 using Data.Entities;
 
 namespace Business.Factories;
 
-public static class ServiceFactory
+public class ServiceFactory
 {
-    public static ServiceModel ModelFromEntity(ServiceEntity entity)
+    public static ServiceCreateDto Create()
     {
-        if (entity == null)
-            throw new ArgumentNullException(nameof(entity));
-
-        return new ServiceModel
-        {
-            Id = entity.Id,
-            ServiceName = entity.ServiceName,
-            PricePerHour = entity.PricePerHour,
-            UnitName = entity.Unit?.UnitName ?? string.Empty
-        };
+        return new ServiceCreateDto();
     }
-
-    public static ServiceEntity EntityFromModel(ServiceModel model)
-    {
-        return new ServiceEntity
-        {
-            Id = model.Id,
-            ServiceName = model.ServiceName,
-            PricePerHour = model.PricePerHour
-        };
-    }
-
-    public static ServiceEntity EntityFromDto(ServiceDto dto)
+    public static ServiceEntity CreateServiceEntity(ServiceCreateDto dto)
     {
         return new ServiceEntity
         {
             ServiceName = dto.ServiceName,
-            PricePerHour = dto.PricePerHour,
+            PricePerUnit = dto.PricePerUnit,
             UnitId = dto.UnitId
         };
     }
+    public static ServiceModel CreateServiceModel(ServiceEntity entity)
+    {
+        return new ServiceModel
+        {
+            Id = entity.Id,
+            ServiceName = entity.ServiceName,
+            PricePerUnit = entity.PricePerUnit,
+            UnitId = entity.UnitId,
+            Unit = UnitFactory.CreateUnitModel(entity.Unit)
+        };
+    }
+
+    public static ServiceEntity UpdateServiceEntity(ServiceEntity entity, ServiceUpdateDto dto)
+    {
+        entity.ServiceName = dto.ServiceName;
+        entity.PricePerUnit = dto.PricePerUnit;
+        entity.UnitId = dto.UnitId;
+        return entity;
+    }
 }
+

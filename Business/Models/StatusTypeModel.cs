@@ -1,8 +1,7 @@
-﻿namespace Business.Models
+﻿namespace Business.Models;
+
+public class StatusTypeModel
 {
-    public class StatusTypeModel
-    {
-        public int Id { get; set; }
-        public string StatusTypeName { get; set; } = string.Empty;
-    }
+    public int Id { get; set; }
+    public string StatusTypeName { get; set; } = null!;
 }

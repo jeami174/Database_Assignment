@@ -1,10 +1,11 @@
-﻿namespace Business.Models
-{
-    public class CustomerModel
-    {
-        public int Id { get; set; }
-        public string CustomerName { get; set; } = string.Empty;
+﻿namespace Business.Models;
 
-        public string CustomerType { get; set; } = string.Empty;
-    }
+public class CustomerModel
+{
+    public int Id { get; set; }
+    public string CustomerName { get; set; } = null!;
+    public int CustomerTypeId { get; set; }
+
+    public ICollection<CustomerContactModel> CustomerContacts { get; set; } = null!;
+
 }

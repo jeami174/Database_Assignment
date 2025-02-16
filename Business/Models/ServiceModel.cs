@@ -1,11 +1,10 @@
-﻿namespace Business.Models
-{
-    public class ServiceModel
-    {
-        public int Id { get; set; }
-        public string ServiceName { get; set; } = string.Empty;
-        public decimal PricePerHour { get; set; }
+﻿namespace Business.Models;
 
-        public string UnitName { get; set; } = string.Empty;
-    }
+public class ServiceModel
+{
+    public int Id { get; set; }
+    public string ServiceName { get; set; } = null!;
+    public decimal PricePerUnit { get; set; }
+    public int UnitId { get; set; }
+    public UnitModel Unit { get; set; } = null!;
 }

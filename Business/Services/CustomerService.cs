@@ -1,27 +1,73 @@
-﻿using System.Threading.Tasks;
+﻿using System.Diagnostics;
 using Business.Dtos;
 using Business.Factories;
 using Business.Interfaces;
 using Business.Models;
-using Data.Entities;
 using Data.Interfaces;
 
-namespace Business.Services
+namespace Business.Services;
+
+public class CustomerService(ICustomerRepository customerRepository) : ICustomerService
 {
-    public class CustomerService : BaseService<CustomerModel, CustomerEntity, CustomerCreateDto>, ICustomerService
+    private readonly ICustomerRepository _customerRepository = customerRepository;
+
+    public async Task<CustomerModel> CreateCustomerAsync(CustomerCreateDto dto)
     {
-        private readonly ICustomerRepository _customerRepository;
 
-        public CustomerService(ICustomerRepository repository)
-            : base(repository, CustomerFactory.ModelFromEntity, CustomerFactory.EntityFromModel, CustomerFactory.EntityFromDto)
+        if (string.IsNullOrWhiteSpace(dto.CustomerName))
+            throw new ArgumentException("CustomerName cannot be empty or whitespace.", nameof(dto.CustomerName));
+
+        dto.CustomerName = dto.CustomerName.ToLower();
+
+        bool exists = await _customerRepository.ExistsAsync(x => x.CustomerName.ToLower() == dto.CustomerName);
+        if (exists)
+            throw new Exception("A customer with the same name already exists.");
+
+        try
         {
-            _customerRepository = repository;
+            var customerEntity = CustomerFactory.CreateCustomerEntity(dto);
+            var createdEntity = await _customerRepository.CreateAsync(customerEntity);
+            return CustomerFactory.CreateCustomerModel(createdEntity);
         }
-
-        public async Task<CustomerModel> GetCustomerWithDetailsAsync(int id)
+        catch (Exception ex)
         {
-            var entity = await _customerRepository.GetCustomerWithDetailsAsync(c => c.Id == id);
-            return entity != null ? CustomerFactory.ModelFromEntity(entity) : null!;
+            Debug.WriteLine($"Error creating customer entity :: {ex.Message}");
+            throw;
         }
     }
+
+    public async Task<IEnumerable<CustomerModel>> GetAllCustomersAsync()
+    {
+        var entities = await _customerRepository.GetCustomersWithDetailsAsync();
+        return entities.Select(e => CustomerFactory.CreateCustomerModel(e));
+    }
+
+    public async Task<CustomerModel?> GetCustomerWithDetailsAsync(int id)
+    {
+        var entity = await _customerRepository.GetCustomerWithDetailsAsync(c => c.Id == id);
+        return entity != null ? CustomerFactory.CreateCustomerModel(entity) : null;
+    }
+
+    public async Task UpdateCustomerAsync(int id, CustomerUpdateDto dto)
+    {
+        var entity = await _customerRepository.GetOneAsync(c => c.Id == id);
+        if (entity == null)
+        {
+            throw new Exception("Customer not found");
+        }
+
+        var updatedEntity = CustomerFactory.CreateUpdatedEntity(dto, entity);
+        await _customerRepository.UpdateAsync(updatedEntity);
+    }
+
+    public async Task DeleteCustomerAsync(int id)
+    {
+        var entity = await _customerRepository.GetOneAsync(c => c.Id == id);
+        if (entity == null)
+        {
+            throw new Exception("Customer not found");
+        }
+        await _customerRepository.DeleteAsync(entity);
+    }
 }
+

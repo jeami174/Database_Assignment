@@ -1,11 +1,5 @@
-﻿using Business.Models;
-using Data.Entities;
-using System.Threading.Tasks;
+﻿namespace Business.Interfaces;
 
-namespace Business.Interfaces;
-
-public interface IServiceService : IBaseService<ServiceModel, ServiceEntity, ServiceDto>
+public class IServiceService
 {
-    Task<ServiceModel> GetServiceWithUnitAsync(int id);
 }
-

@@ -1,11 +1,13 @@
 ﻿using Business.Dtos;
 using Business.Models;
-using Data.Entities;
-using System.Threading.Tasks;
 
 namespace Business.Interfaces;
 
-public interface ICustomerService : IBaseService<CustomerModel, CustomerEntity, CustomerCreateDto>
+public interface ICustomerService
 {
-    Task<CustomerModel> GetCustomerWithDetailsAsync(int id);
+    Task<CustomerModel> CreateCustomerAsync(CustomerCreateDto dto);
+    Task<IEnumerable<CustomerModel>> GetAllCustomersAsync();
+    Task<CustomerModel?> GetCustomerWithDetailsAsync(int id);
+    Task UpdateCustomerAsync(int id, CustomerUpdateDto dto);
+    Task DeleteCustomerAsync(int id);
 }

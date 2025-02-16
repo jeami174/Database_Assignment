@@ -1,13 +1,14 @@
 ﻿using Business.Dtos;
 using Business.Models;
-using Data.Entities;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
-namespace Business.Interfaces;
-
-public interface IProjectService : IBaseService<ProjectModel, ProjectEntity, ProjectCreateDto>
+namespace Business.Interfaces
 {
-    Task<ProjectModel> GetProjectDetailsAsync(int id);
-    Task<ICollection<ProjectModel>> GetAllProjectsWithDetailsAsync();
+    public interface IProjectService
+    {
+        Task<ProjectModel> CreateProjectAsync(ProjectCreateDto dto);
+        Task<ProjectModel> UpdateProjectAsync(int id, ProjectUpdateDto dto);
+        Task DeleteProjectAsync(int id);
+        Task<ProjectModel?> GetProjectWithDetailsAsync(int id);
+        Task<IEnumerable<ProjectDto>> GetAllProjectsAsync();
+    }
 }

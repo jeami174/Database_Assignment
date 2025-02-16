@@ -1,45 +1,46 @@
-﻿using System;
+﻿using Business.Dtos;
 using Business.Models;
 using Data.Entities;
 
 namespace Business.Factories;
 
-public static class UserFactory
+public class UserFactory
 {
-    public static UserModel ModelFromEntity(UserEntity entity)
+    public static UserCreateDto Create()
     {
-        if (entity == null)
-            throw new ArgumentNullException(nameof(entity));
+        return new UserCreateDto();
+    }
 
+    public static UserEntity CreateUserEntity(UserCreateDto userCreateDto)
+    {
+        return new UserEntity
+        {
+            FirstName = userCreateDto.FirstName,
+            LastName = userCreateDto.LastName,
+            Email = userCreateDto.Email,
+            RoleId = userCreateDto.RoleId
+        };
+    }
+
+    public static UserModel CreateUserModel(UserEntity userEntity)
+    {
         return new UserModel
         {
-            Id = entity.Id,
-            FirstName = entity.FirstName,
-            LastName = entity.LastName,
-            Email = entity.Email,
-            RoleName = entity.Role?.RoleName ?? string.Empty
+            Id = userEntity.Id,
+            FirstName = userEntity.FirstName,
+            LastName = userEntity.LastName,
+            Email = userEntity.Email,
+            RoleId = userEntity.RoleId,
+            Role = UserRoleFactory.CreateUserRoleModel(userEntity.Role)
         };
     }
 
-    public static UserEntity EntityFromModel(UserModel model)
+    public static UserEntity UpdateUserEntity(UserEntity entity, UserUpdateDto dto)
     {
-        return new UserEntity
-        {
-            Id = model.Id,
-            FirstName = model.FirstName,
-            LastName = model.LastName,
-            Email = model.Email
-        };
-    }
-
-    public static UserEntity EntityFromDto(UserCreateDto dto)
-    {
-        return new UserEntity
-        {
-            FirstName = dto.FirstName,
-            LastName = dto.LastName,
-            Email = dto.Email,
-            RoleId = dto.RoleId
-        };
+        entity.FirstName = dto.FirstName;
+        entity.LastName = dto.LastName;
+        entity.Email = dto.Email;
+        entity.RoleId = dto.RoleId;
+        return entity;
     }
 }
