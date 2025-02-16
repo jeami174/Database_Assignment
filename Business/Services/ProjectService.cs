@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Business.Dtos;
 using Business.Factories;
 using Business.Interfaces;
 using Business.Models;
@@ -9,7 +10,7 @@ using Data.Interfaces;
 
 namespace Business.Services
 {
-    public class ProjectService : BaseService<ProjectModel, ProjectEntity, ProjectDto>, IProjectService
+    public class ProjectService : BaseService<ProjectModel, ProjectEntity, ProjectCreateDto>, IProjectService
     {
         private readonly IProjectRepository _projectRepository;
 

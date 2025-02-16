@@ -32,7 +32,7 @@ public static class UserFactory
         };
     }
 
-    public static UserEntity EntityFromDto(UserDto dto)
+    public static UserEntity EntityFromDto(UserCreateDto dto)
     {
         return new UserEntity
         {

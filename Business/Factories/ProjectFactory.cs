@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Business.Dtos;
 using Business.Models;
 using Data.Entities;
 
@@ -45,7 +46,7 @@ public static class ProjectFactory
         };
     }
 
-    public static ProjectEntity EntityFromDto(ProjectDto dto)
+    public static ProjectEntity EntityFromDto(ProjectCreateDto dto)
     {
         return new ProjectEntity
         {

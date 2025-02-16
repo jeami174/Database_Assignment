@@ -1,8 +1,6 @@
 ﻿
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Business.Interfaces;
-using Microsoft.EntityFrameworkCore;
 
 namespace Data.Entities;
 
@@ -15,7 +13,6 @@ public class ProjectEntity
     [Column(TypeName = "nvarchar(50)")]
     public string Title { get; set; } = null!;
 
-    [Required]
     [Column(TypeName = "nvarchar(max)")]
     public string? Description { get; set; }
 

@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Business.Dtos;
 using Business.Factories;
 using Business.Interfaces;
 using Business.Models;
@@ -7,7 +8,7 @@ using Data.Interfaces;
 
 namespace Business.Services
 {
-    public class CustomerService : BaseService<CustomerModel, CustomerEntity, CustomerDto>, ICustomerService
+    public class CustomerService : BaseService<CustomerModel, CustomerEntity, CustomerCreateDto>, ICustomerService
     {
         private readonly ICustomerRepository _customerRepository;
 

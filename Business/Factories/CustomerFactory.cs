@@ -1,4 +1,5 @@
 ﻿using System;
+using Business.Dtos;
 using Business.Models;
 using Data.Entities;
 
@@ -28,7 +29,7 @@ public static class CustomerFactory
         };
     }
 
-    public static CustomerEntity EntityFromDto(CustomerDto dto)
+    public static CustomerEntity EntityFromDto(CustomerCreateDto dto)
     {
         return new CustomerEntity
         {
