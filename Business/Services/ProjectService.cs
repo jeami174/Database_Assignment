@@ -5,122 +5,108 @@ using Business.Interfaces;
 using Business.Models;
 using Data.Contexts;
 using Data.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
-namespace Business.Services
+namespace Business.Services;
+
+public class ProjectService : IProjectService
 {
-    // Använder transaktionshantering för att hantera rollback vid fel.
-    public class ProjectService : IProjectService
+    private readonly IProjectRepository _projectRepository;
+    private readonly DataContext _context;
+
+    public ProjectService(IProjectRepository projectRepository, DataContext context)
     {
-        private readonly IProjectRepository _projectRepository;
-        private readonly DataContext _context;
+        _projectRepository = projectRepository;
+        _context = context;
+    }
 
-        public ProjectService(IProjectRepository projectRepository, DataContext context)
+    public async Task<ProjectModel> CreateProjectAsync(ProjectCreateDto dto)
+    {
+        using var transaction = await _context.Database.BeginTransactionAsync();
+        try
         {
-            _projectRepository = projectRepository;
-            _context = context;
+            var projectEntity = ProjectFactory.CreateProjectEntity(dto);
+            var createdEntity = await _projectRepository.CreateAsync(projectEntity);
+            await transaction.CommitAsync();
+            return ProjectFactory.CreateProjectDetailModel(createdEntity);
         }
-
-        public async Task<ProjectModel> CreateProjectAsync(ProjectCreateDto dto)
+        catch (Exception ex)
         {
-            using var transaction = await _context.Database.BeginTransactionAsync();
-            try
-            {
-                var projectEntity = ProjectFactory.CreateProjectEntity(dto);
-                var createdEntity = await _projectRepository.CreateAsync(projectEntity);
-                await transaction.CommitAsync();
-                return ProjectFactory.CreateProjectModel(createdEntity);
-            }
-            catch (Exception ex)
-            {
-                await transaction.RollbackAsync();
-                Debug.WriteLine($"Error creating project: {ex.Message}");
-                throw;
-            }
+            await transaction.RollbackAsync();
+            Debug.WriteLine($"Error creating project: {ex.Message}");
+            throw;
         }
+    }
 
-        public async Task<ProjectModel> UpdateProjectAsync(int id, ProjectUpdateDto dto)
+    public async Task<ProjectModel> UpdateProjectAsync(int id, ProjectUpdateDto dto)
+    {
+        using var transaction = await _context.Database.BeginTransactionAsync();
+        try
         {
-            using var transaction = await _context.Database.BeginTransactionAsync();
-            try
-            {
-                var entity = await _projectRepository.GetOneAsync(p => p.Id == id);
-                if (entity == null)
-                    throw new Exception("Project not found");
+            var entity = await _projectRepository.GetOneAsync(p => p.Id == id);
+            if (entity == null)
+                throw new Exception("Project not found");
 
-                var updatedEntity = ProjectFactory.UpdateProjectEntity(entity, dto);
-                var result = await _projectRepository.UpdateAsync(updatedEntity);
-                if (result == null)
-                    throw new Exception("Error updating project");
+            entity = ProjectFactory.UpdateProjectEntity(entity, dto);
+            var updatedEntity = await _projectRepository.UpdateAsync(entity);
+            if (updatedEntity == null)
+                throw new Exception("Error updating project");
 
-                await transaction.CommitAsync();
-                return ProjectFactory.CreateProjectModel(result);
-            }
-            catch (Exception ex)
-            {
-                await transaction.RollbackAsync();
-                Debug.WriteLine($"Error updating project: {ex.Message}");
-                throw;
-            }
+            await transaction.CommitAsync();
+            return ProjectFactory.CreateProjectDetailModel(entity);
         }
-
-        public async Task DeleteProjectAsync(int id)
+        catch (Exception ex)
         {
-            using var transaction = await _context.Database.BeginTransactionAsync();
-            try
-            {
-                var entity = await _projectRepository.GetOneAsync(p => p.Id == id);
-                if (entity == null)
-                    throw new Exception("Project not found");
-
-                var deleted = await _projectRepository.DeleteAsync(entity);
-                if (!deleted)
-                    throw new Exception("Error deleting project");
-
-                await transaction.CommitAsync();
-            }
-            catch (Exception ex)
-            {
-                await transaction.RollbackAsync();
-                Debug.WriteLine($"Error deleting project: {ex.Message}");
-                throw;
-            }
+            await transaction.RollbackAsync();
+            Debug.WriteLine($"Error updating project: {ex.Message}");
+            throw;
         }
+    }
 
-        public async Task<ProjectModel?> GetProjectWithDetailsAsync(int id)
+    public async Task DeleteProjectAsync(int id)
+    {
+        using var transaction = await _context.Database.BeginTransactionAsync();
+        try
         {
-            // Läsoperationer kräver inte en explicit transaktion
-            var entity = await _projectRepository.GetProjectWithDetailsAsync(id);
-            return entity != null ? ProjectFactory.CreateProjectModel(entity) : null;
+            var entity = await _projectRepository.GetOneAsync(p => p.Id == id);
+            if (entity == null)
+                throw new Exception("Project not found");
+
+            var deleted = await _projectRepository.DeleteAsync(entity);
+            if (!deleted)
+                throw new Exception("Error deleting project");
+
+            await transaction.CommitAsync();
         }
-
-        public async Task<IEnumerable<ProjectModel>> GetAllProjectsAsync()
+        catch (Exception ex)
         {
-            try
-            {
-                // Hämta entiteter med detaljer
-                var projectEntities = await _projectRepository.GetAllProjectsWithDetailsAsync();
-                if (projectEntities == null || !projectEntities.Any())
-                {
-                    Debug.WriteLine("Inga projekt hittades.");
-                    return new List<ProjectModel>();
-                }
-
-                // Mappar varje ProjectEntity till en ProjectModel med hjälp av din factory
-                return projectEntities
-                    .Select(entity => ProjectFactory.CreateProjectModel(entity))
-                    .ToList();
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine($"Fel vid hämtning av projekt: {ex.Message}");
-                return new List<ProjectModel>();
-            }
+            await transaction.RollbackAsync();
+            Debug.WriteLine($"Error deleting project: {ex.Message}");
+            throw;
         }
+    }
 
-        async Task<IEnumerable<ProjectDto>> IProjectService.GetAllProjectsAsync()
+    public async Task<ProjectModel?> GetProjectWithDetailsAsync(int id)
+    {
+        var entity = await _projectRepository.GetProjectWithDetailsAsync(id);
+        return entity != null ? ProjectFactory.CreateProjectDetailModel(entity) : null;
+    }
+
+    public async Task<IEnumerable<ProjectModel>> ReadAllWithoutDetailsAsync()
+    {
+        try
         {
-            throw new NotImplementedException();
+            // Hämtar entiteter med minimala Include-satser (Customer, Status och User)
+            var entities = await _projectRepository.GetAllWithDetailsAsync(query =>
+                query.Include(p => p.Customer)
+                     .Include(p => p.Status)
+                     .Include(p => p.User));
+            return entities.Select(ProjectFactory.CreateProjectOverviewModel).ToList();
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"Error reading projects: {ex.Message}");
+            return new List<ProjectModel>();
         }
     }
 }
-

@@ -9,6 +9,6 @@ namespace Business.Interfaces
         abstract Task<ProjectModel> UpdateProjectAsync(int id, ProjectUpdateDto dto);
         abstract Task DeleteProjectAsync(int id);
         abstract Task<ProjectModel?> GetProjectWithDetailsAsync(int id);
-        abstract Task<IEnumerable<ProjectDto>> GetAllProjectsAsync();
+        abstract Task<IEnumerable<ProjectModel>> ReadAllWithoutDetailsAsync();
     }
 }
