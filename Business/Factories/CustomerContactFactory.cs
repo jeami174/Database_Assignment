@@ -2,51 +2,49 @@
 using Business.Models;
 using Data.Entities;
 
-namespace Business.Factories
+namespace Business.Factories;
+
+public class CustomerContactFactory
 {
-   public class CustomerContactFactory
+    public static CustomerContactCreateDto CreateCustomerContactDto()
     {
-        public static CustomerContactCreateDto CreateCustomerContactDto()
-        {
-            return new CustomerContactCreateDto();
-        }
+        return new CustomerContactCreateDto();
+    }
 
-        public static CustomerContactEntity CreateCustomerContactEntity(CustomerContactCreateDto customerContactCreateDto)
+    public static CustomerContactEntity CreateCustomerContactEntity(CustomerContactCreateDto customerContactCreateDto)
+    {
+        return new CustomerContactEntity
         {
-            return new CustomerContactEntity
-            {
-                FirstName = customerContactCreateDto.FirstName,
-                LastName = customerContactCreateDto.LastName,
-                Email = customerContactCreateDto.Email,
-                CustomerId = customerContactCreateDto.CustomerId
-            };
-        }
+            FirstName = customerContactCreateDto.FirstName,
+            LastName = customerContactCreateDto.LastName,
+            Email = customerContactCreateDto.Email,
+            CustomerId = customerContactCreateDto.CustomerId
+        };
+    }
 
-        public static CustomerContactModel CreateCustomerContactModel(CustomerContactEntity customerContactEntity)
+    public static CustomerContactModel CreateCustomerContactModel(CustomerContactEntity customerContactEntity)
+    {
+        return new CustomerContactModel()
         {
-            return new CustomerContactModel()
-            {
-                Id = customerContactEntity.Id,
-                FirstName = customerContactEntity.FirstName,
-                LastName = customerContactEntity.LastName,
-                Email = customerContactEntity.Email,
-                CustomerId = customerContactEntity.CustomerId,
+            Id = customerContactEntity.Id,
+            FirstName = customerContactEntity.FirstName,
+            LastName = customerContactEntity.LastName,
+            Email = customerContactEntity.Email,
+            CustomerId = customerContactEntity.CustomerId,
 
-                Customer = CustomerFactory.CreateCustomerModel(customerContactEntity.Customer)
-            };
-        }
+            Customer = CustomerFactory.CreateCustomerModel(customerContactEntity.Customer)
+        };
+    }
 
-        public static CustomerContactEntity UpdateCustomerContactEntity(CustomerContactEntity customerContactEntity, CustomerContactCreateDto customerContactCreateDto)
+    public static CustomerContactEntity UpdateCustomerContactEntity(CustomerContactEntity entity, CustomerContactUpdateDto dto)
+    {
+        return new CustomerContactEntity
         {
-            return new CustomerContactEntity()
-            {
-                Id = customerContactEntity.Id,
-                FirstName = customerContactCreateDto.FirstName,
-                LastName = customerContactCreateDto.LastName,
-                Email = customerContactCreateDto.Email,
-                CustomerId = customerContactCreateDto.CustomerId
-            };
-            
-        }
+            Id = entity.Id,
+            FirstName = dto.FirstName,
+            LastName = dto.LastName,
+            Email = dto.Email,
+            CustomerId = dto.CustomerId
+        };
     }
 }

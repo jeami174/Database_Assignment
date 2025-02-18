@@ -1,16 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Presentation_WPF_MainApp.Interfaces
+﻿namespace Presentation_WPF_MainApp.Interfaces
 {
-    /// <summary>
-    /// Interface for navigating between different views in the application.
-    /// </summary>
-    internal class INavigation
+    public interface INavigation
     {
+        /// <summary>
+        /// Navigerar till listan över projekt.
+        /// </summary>
+        void ShowProjectList();
 
+        /// <summary>
+        /// Navigerar asynkront till sidan för att redigera ett projekt.
+        /// </summary>
+        /// <param name="projectId">Id för projektet som ska redigeras.</param>
+        void ShowEditProject(int projectId);
+
+        /// <summary>
+        /// Navigerar till sidan för att skapa ett nytt projekt.
+        /// </summary>
+        void ShowCreateProject();
     }
 }
+
+

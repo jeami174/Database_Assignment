@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Presentation_WPF_MainApp.Views
+namespace Presentation_WPF_MainApplication.Views
 {
     /// <summary>
-    /// Interaction logic for ProjectListView.xaml
+    /// Interaction logic for ProjectsView.xaml
     /// </summary>
-    public partial class ProjectListView : UserControl
+    public partial class ProjectsView : UserControl
     {
-        public ProjectListView()
+        public ProjectsView()
         {
             InitializeComponent();
         }

@@ -4,6 +4,11 @@
              xmlns:local="clr-namespace:Presentation_WPF_MainApp"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Resourses/Styling/ButtonStyling.xaml"/>
+                <ResourceDictionary Source="Resourses/Styling/TextStyles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

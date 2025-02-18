@@ -4,9 +4,53 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Presentation_WPF_MainApp"
+        xmlns:views="clr-namespace:Presentation_WPF_MainApp.Views"
+        xmlns:viewmodels="clr-namespace:Presentation_WPF_MainApp.ViewModels"
+        d:DataContext="{d:DesignInstance Type=viewmodels:MainViewModel}"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None"
+        Background="Transparent"
+        AllowsTransparency="True"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="Project Application" Height="770" Width="350">
 
-    </Grid>
+    <Border CornerRadius="15">
+        <Border.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                <GradientStop Color="#5B3B70" Offset="0" />
+                <GradientStop Color="#8C66A1" Offset="0.5" />
+                <GradientStop Color="#D1B9E1" Offset="1" />
+            </LinearGradientBrush>
+        </Border.Background>
+
+        <Grid Margin="10" >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0" Background="Transparent" MouseDown="Grid_MouseDown" >
+                <Button Style="{StaticResource ExitButtonStyle}"
+                    Click="ExitButton_Click"
+                    Margin="0,0,0,0"/>
+            </Grid>
+
+            <ContentControl Grid.Row="1" Content="{Binding CurrentViewModel}">
+                <ContentControl.Resources>
+                    <DataTemplate DataType="{x:Type viewmodels:ProjectListViewModel}">
+                        <views:ProjectListView />
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type viewmodels:ProjectCreateViewModel}">
+                        <views:ProjectCreateView />
+                    </DataTemplate>
+                    <!--<DataTemplate DataType="{x:Type viewmodels:ProjectEditViewModel}">
+                        <views:ProjectEditView />
+                    </DataTemplate>-->
+                    <DataTemplate DataType="{x:Type viewmodels:ProjectDetailViewModel}">
+                        <views:ProjectDetailView />
+                    </DataTemplate>
+                </ContentControl.Resources>
+            </ContentControl>
+        </Grid>
+    </Border>
 </Window>

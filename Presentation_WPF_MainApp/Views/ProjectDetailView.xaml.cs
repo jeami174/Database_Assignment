@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace Presentation_WPF_MainApp.Views
 {
     /// <summary>
-    /// Interaction logic for ProjectListView.xaml
+    /// Interaction logic for ProjectDetailView.xaml
     /// </summary>
-    public partial class ProjectListView : UserControl
+    public partial class ProjectDetailView : Page
     {
-        public ProjectListView()
+        public ProjectDetailView()
         {
             InitializeComponent();
         }

@@ -5,10 +5,10 @@ namespace Business.Interfaces
 {
     public interface IProjectService
     {
-        Task<ProjectModel> CreateProjectAsync(ProjectCreateDto dto);
-        Task<ProjectModel> UpdateProjectAsync(int id, ProjectUpdateDto dto);
-        Task DeleteProjectAsync(int id);
-        Task<ProjectModel?> GetProjectWithDetailsAsync(int id);
-        Task<IEnumerable<ProjectDto>> GetAllProjectsAsync();
+        abstract Task<ProjectModel> CreateProjectAsync(ProjectCreateDto dto);
+        abstract Task<ProjectModel> UpdateProjectAsync(int id, ProjectUpdateDto dto);
+        abstract Task DeleteProjectAsync(int id);
+        abstract Task<ProjectModel?> GetProjectWithDetailsAsync(int id);
+        abstract Task<IEnumerable<ProjectDto>> GetAllProjectsAsync();
     }
 }
